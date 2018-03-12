@@ -69,5 +69,5 @@ func (w *Window) Until() time.Duration {
 }
 
 func normaliseTime(t time.Time) time.Time {
-	return time.Date(1, 1, 1, t.Hour(), t.Minute(), 0, 0, time.UTC)
+	return time.Date(1, 1, 1, t.Hour(), t.Minute(), t.Second(), 0, time.UTC)
 }
