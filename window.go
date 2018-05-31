@@ -78,7 +78,7 @@ func normaliseTime(t time.Time) time.Time {
 	return time.Date(1, 1, 1, t.Hour(), t.Minute(), t.Second(), 0, time.UTC)
 }
 
-// UntilEnd reutrns the duration until the end of the time window.
+// UntilEnd returns the duration until the end of the time window.
 func (w *Window) UntilEnd() time.Duration {
 	if (w.Active()) {
 		return w.End.Sub(w.nowTimeAfterStart())
