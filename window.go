@@ -64,7 +64,7 @@ func addDay(t time.Time) time.Time {
 	return t.Add(24 * time.Hour)
 }
 
-// to make time calculations easier we choose a date time to represent now
+// nowTimeAfterStart to make time calculations easier we choose a date time to represent now
 // that is on or the next one after the start time
 func (w *Window) nowTimeAfterStart() time.Time {
 	now := normaliseTime(w.Now())
@@ -86,11 +86,12 @@ func (w *Window) UntilEnd() time.Duration {
 	return time.Duration(0)
 }
 
-// NextInterval gets when the next interval starts
+// UntilNextInterval gets when the next interval starts.
+// Only works when window is currently active.
 func (w *Window) UntilNextInterval(interval time.Duration) time.Duration {
 	if (w.Active()) {
 		now := w.nowTimeAfterStart()
-		elapsedTime := now.Sub(w.Start) + time.Second
+		elapsedTime := now.Sub(w.Start)
 		nextInterval := w.Start.Add(elapsedTime.Truncate(interval) + interval)
 
 		if (w.End.After(nextInterval)) {
