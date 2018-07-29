@@ -26,13 +26,13 @@ w.Until() == 0
 w.Active() == true
 w.Until() == 0
 
-// At 9:50am
+// At 9:49am
 w.Active() == true
-w.Until() == 0
+w.Until() == time.Minute
 
-// At 9:51am
+// At 9:50am
 w.Active() == false
-w.Until() == 739*time.Minute // Duration until the next window
+w.Until() == 740*time.Minute // Duration until the next window
 ```
 
 # License
