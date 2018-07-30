@@ -134,10 +134,10 @@ func TestMorningToMorning(t *testing.T) {
 	assert.Equal(t, time.Duration(0), w.Until())
 	assert.Equal(t, 23*time.Hour, w.UntilEnd())
 
-	w.Now = mkNow(17, 0)
+	w.Now = mkNow(18, 0)
 	assert.True(t, w.Active())
 	assert.Equal(t, time.Duration(0), w.Until())
-	assert.Equal(t, 17*time.Hour, w.UntilEnd())
+	assert.Equal(t, 16*time.Hour, w.UntilEnd())
 }
 
 func mkTime(hour, minute int) time.Time {
