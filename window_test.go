@@ -112,6 +112,34 @@ func TestStartGreaterThanEnd(t *testing.T) {
 	assert.Equal(t, time.Duration(-1), w.UntilNextInterval(interval))
 }
 
+func TestMorningToMorning(t *testing.T) {
+	// Window not active just between 10am and 11am each day.
+	w := window.New(mkTime(11, 0), mkTime(10, 0))
+
+	w.Now = mkNow(9, 59)
+	assert.True(t, w.Active())
+	assert.Equal(t, time.Duration(0), w.Until())
+	assert.Equal(t, time.Minute, w.UntilEnd())
+
+	w.Now = mkNow(10, 0)
+	assert.False(t, w.Active())
+	assert.Equal(t, time.Hour, w.Until())
+
+	w.Now = mkNow(10, 59)
+	assert.False(t, w.Active())
+	assert.Equal(t, time.Minute, w.Until())
+
+	w.Now = mkNow(11, 0)
+	assert.True(t, w.Active())
+	assert.Equal(t, time.Duration(0), w.Until())
+	assert.Equal(t, 23*time.Hour, w.UntilEnd())
+
+	w.Now = mkNow(17, 0)
+	assert.True(t, w.Active())
+	assert.Equal(t, time.Duration(0), w.Until())
+	assert.Equal(t, 17*time.Hour, w.UntilEnd())
+}
+
 func mkTime(hour, minute int) time.Time {
 	return time.Date(1, 1, 1, hour, minute, 0, 0, time.UTC)
 }
