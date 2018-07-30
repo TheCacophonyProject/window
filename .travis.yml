@@ -1,13 +1,8 @@
 language: go
 
 go:
-  - "1.10.3"
-  - master  # find out if a upcoming change in Go is going to break us
-
-matrix:
-  # We only want to fail the build based on stable versions of Go
-  allow_failures:
-    - go: master
+  - "1.9.x"
+  - "1.10.x"
 
 script:
   - go test
