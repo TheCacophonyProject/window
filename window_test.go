@@ -2,34 +2,32 @@
 // Use of this source code is governed by the Apache License Version 2.0;
 // see the LICENSE file for further details.
 
-package window_test
+package window
 
 import (
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
-
-	"github.com/TheCacophonyProject/window"
 )
 
 func TestNoWindow(t *testing.T) {
 	zero := time.Time{}
-	w := window.New(zero, zero)
+	w := New(zero, zero)
 	assert.True(t, w.Active())
 }
 
 func TestSameStartEnd(t *testing.T) {
 	// Treat this as "no window"
 	now := time.Now()
-	w := window.New(now, now)
+	w := New(now, now)
 
 	assert.True(t, w.Active())
 	assert.Equal(t, time.Duration(0), w.Until())
 }
 
 func TestStartLessThanEnd(t *testing.T) {
-	w := window.New(mkTime(9, 10), mkTime(17, 30))
+	w := New(mkTime(9, 10), mkTime(17, 30))
 	interval := time.Duration(30 * time.Minute)
 
 	w.Now = mkNow(9, 9)
@@ -64,7 +62,7 @@ func TestStartLessThanEnd(t *testing.T) {
 
 func TestStartGreaterThanEnd(t *testing.T) {
 	// Window goes over midnight
-	w := window.New(mkTime(22, 10), mkTime(9, 50))
+	w := New(mkTime(22, 10), mkTime(9, 50))
 	interval := time.Duration(30 * time.Minute)
 
 	w.Now = mkNow(22, 9)
@@ -114,7 +112,7 @@ func TestStartGreaterThanEnd(t *testing.T) {
 
 func TestMorningToMorning(t *testing.T) {
 	// Window not active just between 10am and 11am each day.
-	w := window.New(mkTime(11, 0), mkTime(10, 0))
+	w := New(mkTime(11, 0), mkTime(10, 0))
 
 	w.Now = mkNow(9, 59)
 	assert.True(t, w.Active())
