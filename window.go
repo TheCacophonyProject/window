@@ -34,8 +34,8 @@ func New(start, end string, lat, long float64) (*Window, error) {
 	return &Window{
 		start:     startTime,
 		end:       endTime,
-		Latitude:  lat,
-		Longitude: long,
+		latitude:  lat,
+		longitude: long,
 		Now:       time.Now,
 	}, nil
 }
@@ -45,8 +45,8 @@ func New(start, end string, lat, long float64) (*Window, error) {
 type Window struct {
 	start     *absOrRelTime
 	end       *absOrRelTime
-	Latitude  float64
-	Longitude float64
+	latitude  float64
+	longitude float64
 	Now       func() time.Time
 	NoWindow  bool
 }
@@ -105,7 +105,7 @@ func (w *Window) relativeSunriseOn(year int, month time.Month, day int) time.Tim
 	if !w.start.Relative {
 		return time.Time{}
 	}
-	sr, _ := sunrise.SunriseSunset(w.Latitude, w.Longitude, year, month, day)
+	sr, _ := sunrise.SunriseSunset(w.latitude, w.longitude, year, month, day)
 	return sr.Add(w.end.RelativeDuration)
 }
 
@@ -113,7 +113,7 @@ func (w *Window) relativeSunsetOn(year int, month time.Month, day int) time.Time
 	if !w.end.Relative {
 		return time.Time{}
 	}
-	_, ss := sunrise.SunriseSunset(w.Latitude, w.Longitude, year, month, day)
+	_, ss := sunrise.SunriseSunset(w.latitude, w.longitude, year, month, day)
 	return ss.Add(w.start.RelativeDuration)
 }
 

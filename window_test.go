@@ -154,8 +154,8 @@ func TestSettingLatLong(t *testing.T) {
 	long := 80.0
 	w, err := New("1h", "1h", lat, long)
 	require.NoError(t, err)
-	assert.Equal(t, lat, w.Latitude)
-	assert.Equal(t, long, w.Longitude)
+	assert.Equal(t, lat, w.latitude)
+	assert.Equal(t, long, w.longitude)
 }
 
 func TestParsingOfWindow(t *testing.T) {
