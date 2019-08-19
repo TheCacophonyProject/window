@@ -11,9 +11,7 @@ import (
 	sunrise "github.com/nathan-osman/go-sunrise"
 )
 
-const (
-	hourMinuteFormat = "15:04"
-)
+const hourMinuteFormat = "15:04"
 
 // New creates a Window instance which represents a recurring window
 // between two times of day. If `start` is after `end` then the time
@@ -45,21 +43,18 @@ func New(start, end string, lat, long float64) (*Window, error) {
 // Window represents a recurring window between two times of day.
 // The Now field can be use to override the time source (for testing).
 type Window struct {
-	start *absOrRelTime
-	end   *absOrRelTime
-
+	start     *absOrRelTime
+	end       *absOrRelTime
 	Latitude  float64
 	Longitude float64
-
-	Now func() time.Time
-
-	NoWindow bool
+	Now       func() time.Time
+	NoWindow  bool
 }
 
 func parseAbsOrRelField(timeStr string) (*absOrRelTime, error) {
 	t := &absOrRelTime{}
 
-	absTime, err := time.Parse("15:04", timeStr)
+	absTime, err := time.Parse(hourMinuteFormat, timeStr)
 	if err == nil {
 		t.Time = absTime
 		t.Relative = false
@@ -90,7 +85,7 @@ func (w *Window) NextEnd() time.Time {
 	return nextAbsTime(w.Now(), w.end.Time)
 }
 
-// NextStart will give the next time the windiw will start.
+// NextStart will give the next time the window will start.
 func (w *Window) NextStart() time.Time {
 	if w.start.Relative {
 		return w.nextRelativeStart()
@@ -210,9 +205,6 @@ func (w *Window) UntilNextInterval(interval time.Duration) time.Duration {
 }
 
 func (w Window) String() string {
-	s := fmt.Sprint("window starts at ")
-	s = s + " and ends at "
-
 	return fmt.Sprintf("window starts at %s and ends at %s", w.start.string("sunset"), w.end.string("sunrise"))
 }
 

@@ -28,8 +28,8 @@ func TestNoWindow(t *testing.T) {
 func TestSameStartEnd(t *testing.T) {
 	// Treat this as "no window"
 	now := time.Now().Format(hourMinuteFormat)
-	w, _ := New(now, now, 0, 0)
-
+	w, err := New(now, now, 0, 0)
+	require.NoError(t, err)
 	assert.True(t, w.Active())
 	assert.Equal(t, time.Duration(0), w.Until())
 }
@@ -39,7 +39,7 @@ func TestStartLessThanEnd(t *testing.T) {
 	assert.NoError(t, err)
 	interval := time.Duration(30 * time.Minute)
 	w.Now = mkNow(9, 9)
-	//assert.False(t, w.Active())
+	assert.False(t, w.Active())
 	assert.Equal(t, time.Minute, w.Until())
 
 	assert.Equal(t, time.Duration(-1), w.UntilNextInterval(interval))
@@ -203,7 +203,7 @@ func TestSunriseSunset(t *testing.T) {
 	nzTimeLoc, err := time.LoadLocation("NZ")
 	require.NoError(t, err)
 	notActiveNowDate := mkNowDate(2000, 1, 2, 12, 0, nzTimeLoc)
-	w, err := New("-1h", "2h", testLatitude, testLongitude) // Window one hour before sunrise to two hours after sunset
+	w, err := New("-1h", "2h", testLatitude, testLongitude) // Window one hour before sunset to two hours after sunrise
 	require.NoError(t, err)
 	w.Now = notActiveNowDate
 	require.Equal(t, time.Duration(-1*time.Hour), w.start.RelativeDuration)
