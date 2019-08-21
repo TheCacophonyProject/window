@@ -205,6 +205,9 @@ func (w *Window) UntilNextInterval(interval time.Duration) time.Duration {
 }
 
 func (w Window) String() string {
+	if w.NoWindow {
+		return fmt.Sprint("no window set")
+	}
 	return fmt.Sprintf("window starts at %s and ends at %s", w.start.string("sunset"), w.end.string("sunrise"))
 }
 
