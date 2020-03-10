@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"time"
 
+	config "github.com/TheCacophonyProject/go-config"
 	sunrise "github.com/nathan-osman/go-sunrise"
 )
 
@@ -18,6 +19,12 @@ const hourMinuteFormat = "15:04"
 // window is assumed to cross over midnight. If `start` and `end` are
 // the same then the window is always active.
 func New(start, end string, lat, long float64) (*Window, error) {
+	if lat == 0 || long == 0 {
+		defLoc := config.DefaultWindowLocation()
+		lat = float64(defLoc.Latitude)
+		long = float64(defLoc.Longitude)
+	}
+
 	startTime, err := parseAbsOrRelField(start)
 	if err != nil {
 		return nil, err
