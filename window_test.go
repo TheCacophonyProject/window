@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	config "github.com/TheCacophonyProject/go-config"
 	sunrise "github.com/nathan-osman/go-sunrise"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -230,6 +231,14 @@ func TestSunriseSunset(t *testing.T) {
 	assert.Equal(t, w.NextEnd().Sub(activeNowDate()), w.UntilEnd())
 	timeUntil14thInterval := w.PreviousStart().Add(time.Duration(14 * 5 * time.Minute)).Sub(activeNowDate())
 	assert.Equal(t, timeUntil14thInterval, w.UntilNextInterval(5*time.Minute))
+}
+
+func TestDefaultLocation(t *testing.T) {
+	w, err := New("0s", "0s", 0, 0)
+	require.NoError(t, err)
+	defaultLocation := config.DefaultWindowLocation()
+	require.Equal(t, defaultLocation.Longitude, float32(w.longitude))
+	require.Equal(t, defaultLocation.Latitude, float32(w.latitude))
 }
 
 func mkTime(hour, minute int) string {

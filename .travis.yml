@@ -1,8 +1,9 @@
 language: go
 
 go:
-  - "1.9.x"
-  - "1.10.x"
+  - "1.13.x"
 
 script:
+  - go mod tidy
+  - git diff --exit-code --quiet || (echo "Please run 'go mod tidy' to clean up the 'go.mod' and 'go.sum' files."; false)
   - go test
