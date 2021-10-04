@@ -23,10 +23,10 @@ func TestParsingTimeJson(t *testing.T) {
 	parseJsonTimeAndCheck(t, "21:55", "21:55")
 
 	_, err := parseJsonTime("25:01")
-	assert.EqualError(t, err, `Json error parsing time ""25:01"": hour out of range`)
+	assert.EqualError(t, err, `Json error parsing time "\"25:01\"": hour out of range`)
 
 	_, err = parseJsonTime("20:67")
-	assert.EqualError(t, err, `Json error parsing time ""20:67"": minute out of range`)
+	assert.EqualError(t, err, `Json error parsing time "\"20:67\"": minute out of range`)
 
 }
 
