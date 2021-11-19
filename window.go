@@ -109,7 +109,7 @@ func (w *Window) PreviousStart() time.Time {
 }
 
 func (w *Window) relativeSunriseOn(year int, month time.Month, day int) time.Time {
-	if !w.start.Relative {
+	if !w.end.Relative {
 		return time.Time{}
 	}
 	sr, _ := sunrise.SunriseSunset(w.latitude, w.longitude, year, month, day)
@@ -117,7 +117,7 @@ func (w *Window) relativeSunriseOn(year int, month time.Month, day int) time.Tim
 }
 
 func (w *Window) relativeSunsetOn(year int, month time.Month, day int) time.Time {
-	if !w.end.Relative {
+	if !w.start.Relative {
 		return time.Time{}
 	}
 	_, ss := sunrise.SunriseSunset(w.latitude, w.longitude, year, month, day)
