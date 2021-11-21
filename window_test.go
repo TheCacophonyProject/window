@@ -241,6 +241,22 @@ func TestDefaultLocation(t *testing.T) {
 	require.Equal(t, defaultLocation.Latitude, float32(w.latitude))
 }
 
+func TestRelativeToAbs(t *testing.T) {
+	nzTimeLoc, err := time.LoadLocation("NZ")
+	require.NoError(t, err)
+	tomorrowSunrise, tomorrowSunset := sunrise.SunriseSunset(testLatitude, testLongitude, 2000, 1, 2)
+
+	w, err := New("13:00", "1h", testLatitude, testLongitude)
+	require.NoError(t, err)
+	w.Now = mkNowDate(2000, 1, 2, 1, 1, nzTimeLoc)
+	assert.Equal(t, tomorrowSunrise.Add(1*time.Hour), w.NextEnd())
+
+	w, err = New("-1h", "13:00", testLatitude, testLongitude)
+	require.NoError(t, err)
+	w.Now = mkNowDate(2000, 1, 2, 1, 1, nzTimeLoc)
+	assert.Equal(t, tomorrowSunset.Add(-1*time.Hour), w.NextStart())
+}
+
 func mkTime(hour, minute int) string {
 	return time.Date(1, 1, 1, hour, minute, 0, 0, time.UTC).Format(hourMinuteFormat)
 }
